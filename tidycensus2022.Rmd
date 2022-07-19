@@ -63,6 +63,6 @@ va_income %>%
         scale_fill_viridis_c(option = "magma")+
         labs(fill = "Income level in VA\n(2020 Census)")
 
-# maybe create one map by zipcode
+# maybe create one map by zipcode tomorrow
 ```
 
