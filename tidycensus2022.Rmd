@@ -1,0 +1,66 @@
+---
+title: "TidyCensus_2022"
+author: "Haoshu"
+date: "2022-07-17"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## R Markdown
+
+
+
+```{r install packages}
+install.packages("tidycensus")
+
+library(tidycensus)
+library(tidyverse)
+library(ggplot2)
+options(tigris_use_cache = TRUE)
+
+```
+
+
+## Enter key access
+```{r key, echo=FALSE}
+key<-"587741d263a5873b848cd00efcf48d53f17156df"
+census_api_key(key, overwrite  = T)
+```
+## Obtain decennial US census in 2020
+```{r obtain census data, echo=FALSE}
+# Extract US census 2020 population by each state
+pop_20<-total_population_20<- get_decennial(
+        geography = "state",
+        variables = "P1_005N",
+        year = 2020,
+        sumfile = "pl"
+
+)
+
+head(pop_20)
+```
+
+## Obtain income level by each county in VA
+```{r obtain income data in VA}
+va_income<-get_acs(
+        geography = "county",
+        variables = "B19013_001",
+        state = "VA",
+        year = 2020,
+        geometry = TRUE
+)
+
+head(va_income)
+```
+## mapview 
+```{r plot, echo=FALSE}
+va_income %>%
+        ggplot(aes(fill = estimate)) +
+        geom_sf(color = NA) +
+        scale_fill_viridis_c(option = "magma")+
+        labs(fill = "Income level in VA\n(2020 Census)")
+```
+
